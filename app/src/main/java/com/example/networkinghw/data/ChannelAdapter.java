@@ -19,6 +19,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ChannelV
     private ArrayList<Channel> mChannelList;
     private OnChannelClickListener mListener;
 
+
     public interface OnChannelClickListener{
         void onChannelClick(int position);
     }

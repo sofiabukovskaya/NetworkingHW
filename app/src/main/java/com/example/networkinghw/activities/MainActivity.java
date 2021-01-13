@@ -34,7 +34,9 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ChannelAdapter.OnChannelClickListener {
+
+    public static final String EXTRA_TITLE ="title";
     private RecyclerView mRecyclerView;
     private ChannelAdapter mChannelAdapter;
     private ArrayList<Channel> mChannelList;
@@ -127,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
                             mChannelAdapter = new ChannelAdapter(MainActivity.this, mChannelList);
                             mRecyclerView.setAdapter(mChannelAdapter);
+                            mChannelAdapter.setOnItemClickListener(MainActivity.this);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -139,5 +142,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mRequestQueue.add(request);
+    }
+
+    @Override
+    public void onChannelClick(int position) {
+        Intent detailIntent = new Intent(MainActivity.this, ChannelDetailActivity.class);
+        Channel clickedItem = mChannelList.get(position);
+        detailIntent.putExtra(EXTRA_TITLE, clickedItem.getTitle());
+        startActivity(detailIntent);
     }
 }
