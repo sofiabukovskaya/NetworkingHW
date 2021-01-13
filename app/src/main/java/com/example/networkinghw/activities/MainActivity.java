@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -14,6 +16,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.networkinghw.R;
 import com.example.networkinghw.data.ChannelAdapter;
+import com.example.networkinghw.data.LoginResponse;
 import com.example.networkinghw.model.Channel;
 
 import org.json.JSONArray;
@@ -27,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private ChannelAdapter mChannelAdapter;
     private ArrayList<Channel> mChannelList;
     private RequestQueue mRequestQueue;
-
+       LoginResponse loginResponse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,13 @@ public class MainActivity extends AppCompatActivity {
 
         mRequestQueue = Volley.newRequestQueue(this);
         parseJSON();
+        Intent intent = getIntent();
+        if(intent.getExtras()!= null){
+            loginResponse = (LoginResponse) intent.getSerializableExtra("user");
+
+            Log.e("TAG", "-------" + loginResponse.getEmail());
+        }
+
     }
 
     private void parseJSON(){

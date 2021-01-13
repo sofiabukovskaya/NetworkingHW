@@ -12,8 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NetworkingHW"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ChannelDetailActivity"></activity>
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.RegisterActivity"></activity>
+        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.ChannelDetailActivity" />
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
