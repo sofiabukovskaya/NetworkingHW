@@ -7,6 +7,18 @@ public class LoginResponse implements Serializable {
     private String email;
     private String username;
     private int user_id;
+    private String token;
+
+    public String logOutUser(){
+        return token;
+    }
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public int getUser_id() {
         return user_id;

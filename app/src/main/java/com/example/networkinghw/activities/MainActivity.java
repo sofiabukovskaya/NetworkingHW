@@ -1,5 +1,6 @@
 package com.example.networkinghw.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,6 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.networkinghw.R;
+import com.example.networkinghw.data.ApiClient;
 import com.example.networkinghw.data.ChannelAdapter;
 import com.example.networkinghw.data.LoginResponse;
 import com.example.networkinghw.model.Channel;
@@ -24,6 +30,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
@@ -50,6 +59,54 @@ public class MainActivity extends AppCompatActivity {
             Log.e("TAG", "-------" + loginResponse.getEmail());
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+         switch (item.getItemId()) {
+             case R.id.item:
+                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                     @Override
+                     public boolean onMenuItemClick(MenuItem item) {
+                          LoginResponse loginResponse = new LoginResponse();
+                          loginResponse.logOutUser();
+                          logOutUser(loginResponse);
+                         return true;
+                     }
+                 });
+
+                 return true;
+
+         }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_logout, menu);
+        return true;
+    }
+    private static String token;
+
+    public void logOutUser(LoginResponse loginResponse){
+        Call<LoginResponse> loginResponseCall = ApiClient.getService().getToken(token);
+        loginResponseCall.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
+                if(response.isSuccessful()){
+                    LoginResponse loginResponse = response.body();
+                    token = response.body().logOutUser();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this,"Error", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void parseJSON(){
